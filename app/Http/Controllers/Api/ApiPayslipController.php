@@ -3,12 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\HRPayroll;
-use App\Models\HRPayrollList;
-use App\Services\PayslipServices;
+use App\Models\EmployeePayslipFile;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Users;
 use Illuminate\Support\Facades\Validator;
 use Webklex\PDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
@@ -30,7 +27,7 @@ class ApiPayslipController extends Controller
                 'src' => $pdf_error], 400);
         }
 
-        $user = Users::where('username',$request->username)->first();
+        $user = User::where('username',$request->username)->first();
 
         if(!$user){
             return response()->json(['result' => 'Unauthorized',
@@ -45,20 +42,13 @@ class ApiPayslipController extends Controller
         $year = $request->year;
         $month = $request->month;
 
-        $payroll = HRPayroll::whereHas('list', function ($subQuery) use ($user_id) {
-                $subQuery->where('user_id',$user_id);
-            })
-            ->whereHas('bank', function ($subQuery) {
-
-            })
-            ->where('generate_option','generate')
+        $payroll = EmployeePayslipFile::where('user_id',$user_id)
             ->where('year',$year);
         if($option=='By Month'){
             $payroll = $payroll->where('month',$month);
         }
         $payroll = $payroll->orderBy('year','DESC')
             ->orderBy('month','DESC')
-            ->orderBy('payroll_type_id','ASC')
             ->get();
 
         if($payroll->count()<=0){
@@ -66,22 +56,17 @@ class ApiPayslipController extends Controller
                 'src' => ''], 200);
         }
 
-        $payslipServices = new PayslipServices;
-
         if($payroll->count()>1){
-            $src = 'storage\hrims\employee/'.$id_no.'\payslip/'.$year.'_'.$month.'_merge.pdf';
+            $src = "storage\Payslip/$year/$id_no.'_merge.pdf";
             $oMerger = PDFMerger::init();
             foreach($payroll as $row){
-                $payroll_id = $row->payroll_id;
-                $pdf = $payslipServices->generateQR($id_no,$payroll_id,'none');
-                $oMerger->addPDF(public_path($pdf), 'all','L');
+                $oMerger->addPDF(public_path($row->path), 'all','L');
             }
             $oMerger->merge();
             $oMerger->save($src);
         }else{
             foreach($payroll as $row){
-                $payroll_id = $row->payroll_id;
-                $src = $payslipServices->generateQR($id_no,$payroll_id,'none');
+                $src = $row->path;
             }
         }
 

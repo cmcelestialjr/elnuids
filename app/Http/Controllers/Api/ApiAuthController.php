@@ -4,7 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use App\Models\UsersSystems;
+use App\Models\UsersNavigation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,15 +50,18 @@ class ApiAuthController extends Controller
 
             $role = 0;
 
-            $user_systems = UsersSystems::with('system')
+            $user_systems = UsersNavigation::select('system')
                 ->where('user_id',$user->id)
-                ->whereIn('system_id',[1,6,7,9])
+                ->where('nav',"")
+                ->where('nav_sub',"")
+                ->whereIn('system',['SIMS','HRIMS','FIS','DTS'])
+                ->groupBy('system')
                 ->get();
             $systems = [];
             if($user_systems->count()>0){
                 foreach($user_systems as $row){
-                    if (!in_array($row->system->shorten, $systems)) {
-                        $systems[] = $row->system->shorten;
+                    if (!in_array($row->system, $systems)) {
+                        $systems[] = $row->system;
                     }
                 }
             }

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Models\HRDeduction;
-use App\Models\HRPayrollDeduction;
+use App\Models\EmployeeDeduction;
 use Illuminate\Http\Request;
-use App\Models\Users;
+use App\Models\User;
 use Illuminate\Support\Facades\Validator;
 
 class ApiDeductionController extends Controller
@@ -22,7 +21,7 @@ class ApiDeductionController extends Controller
             return response()->json(['error' => 'Invalid data'], 400);
         }
 
-        $user = Users::where('username',$request->username)->first();
+        $user = User::where('username',$request->username)->first();
 
         if(!$user){
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -31,23 +30,16 @@ class ApiDeductionController extends Controller
         $year = $request->year;
         $user_id = $user->id;
         
-        $data = HRDeduction::with('group')
-            ->whereHas('payroll_deduction', function ($query) use ($user_id,$year) {
-                $query->where('user_id', $user_id);
-                $query->whereHas('payroll', function ($query) use ($year) {
-                    $query->where('year',$year);
-                    $query->where('generate_option','generate');
-                    $query->whereHas('bank', function ($subQuery) {
-        
-                    });
-                });
-            })->get();
+        $data = EmployeeDeduction::where('user_id',$user_id)
+            ->where('year',$year)
+            ->get();
 
-        $responseData = $data->map(function ($row) {
-            $deduction_group = $row->group_id ? $row->group->name.'-' : '';
+        $responseData = $data->groupBy(function ($row) {
+                return $row->deduction_id . '-' . $row->deduction_name;
+        })->map(function ($group) {
             return [
-                'deduction_name' => $deduction_group.$row->name,
-                'deduction_id' => $row->id
+                'deduction_name' => $group->first()->deduction_name,
+                'deduction_id' => $group->first()->deduction_id
             ];
         });
 
@@ -66,7 +58,7 @@ class ApiDeductionController extends Controller
             return response()->json(['error' => 'Invalid data'], 400);
         }
 
-        $user = Users::where('username',$request->username)->first();
+        $user = User::where('username',$request->username)->first();
 
         if(!$user){
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -76,23 +68,16 @@ class ApiDeductionController extends Controller
         $deduction_id = $request->deduction_id;
         $user_id = $user->id;
 
-        $data = HRPayrollDeduction::with('payroll','deduction')
-            ->where('user_id', $user->id)
-            ->whereHas('payroll', function ($query) use ($year) {
-                $query->where('year',$year);
-                $query->where('generate_option','generate');
-                $query->whereHas('bank', function ($subQuery) {
-
-                });
-            })->where('deduction_id',$deduction_id)
+        $data = EmployeeDeduction::where('user_id', $user_id)
+            ->where('deduction_id', $deduction_id)
+            ->where('year', $year)
             ->get();
 
         $responseData = $data->map(function ($row) {
-            $deduction_group = $row->deduction->group_id ? $row->deduction->group->name.'-' : '';
             return [
-                'deduction_name' => $deduction_group.$row->deduction->name,
+                'deduction_name' => $row->deduction_name,
                 'deduction_id' => $row->deduction_id,
-                'month' => $row->payroll->month,
+                'month' => $row->month,
                 'amount' => $row->amount
             ];
         });

@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\EmployeeDtr;
 use Illuminate\Http\Request;
 use App\Models\User;
-use App\Models\Users;
-use App\Models\UsersDTR;
 use Illuminate\Support\Facades\Validator;
 
 class ApiDtrController extends Controller
@@ -24,7 +23,7 @@ class ApiDtrController extends Controller
             return response()->json(['error' => 'Invalid data'], 400);
         }
 
-        $user = Users::where('username',$request->username)->first();
+        $user = User::where('username',$request->username)->first();
 
         if(!$user){
             return response()->json(['error' => 'Unauthorized'], 401);
@@ -37,14 +36,14 @@ class ApiDtrController extends Controller
             $option = $request->option;
 
             if ($option == 'Today') {
-                $dtrData = UsersDTR::where('id_no', $user->id_no)
+                $dtrData = EmployeeDtr::where('id_no', $user->id_no)
                     ->where('date', date('Y-m-d'))
                     ->get();
             } else {
                 $year = $request->year;
                 $month = $request->month;
                 $date = strtotime("$year-$month-01");
-                $dtrData = UsersDTR::where('id_no', $user->id_no)
+                $dtrData = EmployeeDtr::where('id_no', $user->id_no)
                     ->where('date','>=',date('Y-m-01',$date))
                     ->where('date','<=',date('Y-m-t',$date))
                     ->get();

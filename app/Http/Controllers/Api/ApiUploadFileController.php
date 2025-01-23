@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -15,7 +16,14 @@ class ApiUploadFileController extends Controller
         }
 
         $file = $request->file('file');
+        $id = $request->header('id');
+        $year = $request->header('year');
+        $month = $request->header('month');
 
-        $path = $file->storeAs('user_images', $file->getClientOriginalName(), 'public');
+        $path = $file->storeAs("Payslip/$year", $id.$month.$file->getClientOriginalName(), 'public');
+
+        $url = Storage::url($path);
+
+        return response()->json(['url' => $url], 200);
     }
 }
