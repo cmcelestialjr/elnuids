@@ -16,14 +16,14 @@ class ApiUploadFileController extends Controller
         // }
 
        // $file = $request->file('file');
-        $id = $request->header('id');
-        $year = $request->header('year');
-        $month = $request->header('month');
+        // $id = $request->header('id');
+        // $year = $request->header('year');
+        // $month = $request->header('month');
 
         // $path = $file->storeAs("Payslip/$year", $id.$month.$file->getClientOriginalName(), 'public');
 
         // $url = Storage::url($path);
-        echo 'gasgsa';
-        return response()->json(['url' => $id], 200);
+        return 'gasgsa';
+        //return response()->json(['url' => $id], 200);
     }
 }
