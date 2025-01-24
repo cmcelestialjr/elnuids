@@ -23,7 +23,7 @@ class ApiUploadFileController extends Controller
         // $path = $file->storeAs("Payslip/$year", $id.$month.$file->getClientOriginalName(), 'public');
 
         // $url = Storage::url($path);
-
+        echo 'gasgsa';
         return response()->json(['url' => $id], 200);
     }
 }
