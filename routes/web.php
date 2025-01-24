@@ -14,4 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::post('/login', [IndexController::class, 'index']);
+Route::post('/', [IndexController::class, 'index']);
