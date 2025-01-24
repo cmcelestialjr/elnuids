@@ -27,8 +27,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::post('/upload-file', [ApiUploadFileController::class, 'upload']);
 
+Route::post('/login', [ApiAuthController::class, 'login'])->name('login');
+
 Route::group(['middleware' => [VerifyAppToken::class]], function(){
-    Route::post('/login', [ApiAuthController::class, 'login'])->name('login');
+    
 
     Route::group(['middleware' => ['auth:sanctum']], function () {
         Route::post('/fetchDtr', [ApiDtrController::class, 'fetchDtr'])->name('fetchDtr');
