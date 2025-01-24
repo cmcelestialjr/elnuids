@@ -11,6 +11,12 @@ class IndexController extends Controller
 {
     public function index(Request $request)
     {
-        return view('index');
+        $user = User::where('id',1)->first();
+
+        $data = [
+            'user' => $user
+        ];
+
+        return view('index',$user);
     }
 }
