@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\IndexController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\ApiUploadFileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +14,4 @@ use App\Http\Controllers\Api\ApiUploadFileController;
 |
 */
 
-Route::get('/upload-file', [ApiUploadFileController::class, 'upload']);
-
-Route::get('/', function () {
-    return view('index');
-});
+Route::post('/login', [IndexController::class, 'index']);
