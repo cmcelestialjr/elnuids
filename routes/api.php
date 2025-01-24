@@ -1,7 +1,11 @@
 <?php
 
 use App\Http\Controllers\Api\ApiAuthController;
+use App\Http\Controllers\Api\ApiDeductionController;
+use App\Http\Controllers\Api\ApiDtrController;
+use App\Http\Controllers\Api\ApiPayslipController;
 use App\Http\Controllers\Api\ApiUploadFileController;
+use App\Http\Middleware\VerifyAppToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,12 +25,22 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [ApiAuthController::class, 'login']);
-
 Route::post('/upload-file', [ApiUploadFileController::class, 'upload']);
 
 Route::group(['middleware' => ['auth:sanctum']], function(){
     Route::post('/login', [ApiAuthController::class, 'login']);
+});
+
+Route::group(['middleware' => [VerifyAppToken::class]], function(){
+    Route::post('/login', [ApiAuthController::class, 'login'])->name('login');
+
+    Route::group(['middleware' => ['auth:sanctum']], function () {
+        Route::post('/fetchDtr', [ApiDtrController::class, 'fetchDtr'])->name('fetchDtr');
+        Route::post('/fetchPayslip', [ApiPayslipController::class, 'fetch'])->name('fetchPayslip');
+        Route::post('/fetchDeduction', [ApiDeductionController::class, 'fetch'])->name('fetchDeduction');
+        Route::post('/fetchDeductionData', [ApiDeductionController::class, 'fetchData'])->name('fetchDeductionData');
+        
+    });
 });
 
 
