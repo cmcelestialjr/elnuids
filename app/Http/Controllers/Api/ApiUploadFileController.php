@@ -11,19 +11,19 @@ class ApiUploadFileController extends Controller
 {
     public function upload(Request $request)
     {
-        if (!$request->hasFile('file')) {
-            return response()->json(['error' => 'No image uploaded'], 400);
-        }
+        // if (!$request->hasFile('file')) {
+        //     return response()->json(['error' => 'No image uploaded'], 400);
+        // }
 
-        $file = $request->file('file');
+       // $file = $request->file('file');
         $id = $request->header('id');
         $year = $request->header('year');
         $month = $request->header('month');
 
-        $path = $file->storeAs("Payslip/$year", $id.$month.$file->getClientOriginalName(), 'public');
+        // $path = $file->storeAs("Payslip/$year", $id.$month.$file->getClientOriginalName(), 'public');
 
-        $url = Storage::url($path);
+        // $url = Storage::url($path);
 
-        return response()->json(['url' => $url], 200);
+        return response()->json(['url' => $id], 200);
     }
 }
