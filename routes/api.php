@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\API\ApiAuthController;
-use App\Http\Controllers\API\ApiUploadFileController;
+use App\Http\Controllers\Api\ApiAuthController;
+use App\Http\Controllers\Api\ApiUploadFileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
