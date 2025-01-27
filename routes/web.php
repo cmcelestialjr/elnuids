@@ -19,5 +19,5 @@ Route::get('/', [IndexController::class, 'index']);
 
 // Route::get('/payslip', [PayslipController::class, 'index']);
 
-Route::get('/payslip/{year}', [PayslipController::class, 'index'])
-    ->name('payslip.view');
+Route::get('/payslip', [PayslipController::class, 'index'])
+    ->name('payslip');
