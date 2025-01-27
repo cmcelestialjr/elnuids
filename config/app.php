@@ -61,6 +61,21 @@ return [
 
     /*
     |---------------------------------------------------------------------------
+    | Application Token for Authentication
+    |---------------------------------------------------------------------------
+    |
+    | This token is used for authentication purposes within the application.
+    | It can be used for securing API endpoints or as part of a service
+    | integration. You can set this token in the .env file, and it will
+    | be loaded into the application configuration. Keep this token secure
+    | and never expose it publicly.
+    |
+    */
+
+    'token' => env('APP_TOKEN'),
+
+    /*
+    |---------------------------------------------------------------------------
     | API Key for External Services
     |---------------------------------------------------------------------------
     |
