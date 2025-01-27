@@ -60,6 +60,20 @@ return [
     'asset_url' => env('ASSET_URL'),
 
     /*
+    |---------------------------------------------------------------------------
+    | API Key for External Services
+    |---------------------------------------------------------------------------
+    |
+    | This API key is used for authentication when interacting with external
+    | services. You can set it in the .env file, and it will be loaded into
+    | the application configuration. Ensure this key is kept secure and 
+    | never exposed publicly.
+    |
+    */
+
+    'api_key' => env('APP_API_KEY'),
+
+    /*
     |--------------------------------------------------------------------------
     | Application Timezone
     |--------------------------------------------------------------------------
