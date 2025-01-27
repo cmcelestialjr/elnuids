@@ -1,5 +1,0 @@
-instructors();
-
-function instructors(){
-    instructorSearch();
-}
