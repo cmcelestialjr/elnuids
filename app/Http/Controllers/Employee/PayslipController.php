@@ -12,7 +12,7 @@ class PayslipController extends Controller
     {
         $query = EmployeePayslipFile::where('user_id',1)->where('year',2025)->first();
         $data = [
-            'src' => $query->path
+            'src' => "public/$query->path"
         ];
 
         return view('pdf_view',$data);
