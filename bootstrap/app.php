@@ -13,7 +13,7 @@
 
 $app = new Illuminate\Foundation\Application(
     // $_ENV['APP_BASE_PATH'] ?? dirname(__DIR__)
-    env('APP_BASE_PATH', dirname(__DIR__))
+    config('app.app_path')
 );
 
 // $app->usePublicPath($app->basePath('public_html'));
