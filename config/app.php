@@ -99,6 +99,8 @@ return [
     |
     */
 
+    'app_path' => env('APP_BASE_PATH'),
+
     'timezone' => 'UTC',
 
     /*
