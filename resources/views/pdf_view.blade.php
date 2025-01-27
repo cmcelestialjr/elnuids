@@ -15,7 +15,7 @@
         <div class="content-wrapper">
             <section class="content center">
                 <div class="container-fluid" style="width: 95%">
-                    <iframe id="documentPreview" src="{{url($src)}}#zoom=120" style="width:100%;"></iframe>
+                    <iframe id="documentPreview" src="{{asset($src)}}#zoom=120" style="width:100%;"></iframe>
                 </div>
             </section>
         </div>
