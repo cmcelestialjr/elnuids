@@ -53,21 +53,20 @@ class ApiAuthController extends Controller
 
             $role = 0;
 
-            // $user_systems = UsersNavigation::select('system')
-            //     ->where('user_id',$user->id)
-            //     ->where('nav',"")
-            //     ->where('nav_sub',"")
-            //     ->whereIn('system',['SIMS','HRIMS','FIS','DTS'])
-            //     ->groupBy('system')
-            //     ->get();
+            $user_systems = UsersNavigation::select('system')
+                ->where('user_id',$user->id)
+                ->where('nav',"")
+                ->where('nav_sub',"")
+                ->whereIn('system',['SIMS','HRIMS','FIS','DTS'])
+                ->get();
             $systems = [];
-            // if($user_systems->count()>0){
-            //     foreach($user_systems as $row){
-            //         if (!in_array($row->system, $systems)) {
-            //             $systems[] = $row->system;
-            //         }
-            //     }
-            // }
+            if($user_systems->count()>0){
+                foreach($user_systems as $row){
+                    if (!in_array($row->system, $systems)) {
+                        $systems[] = $row->system;
+                    }
+                }
+            }
 
             return response()->json([
                 'username' => $user->username,
