@@ -28,7 +28,7 @@ class ApiAuthController extends Controller
         // }        
         
         // $apiToken = $request->header('App-Token');
-        // $apiKey = config('app.api_key');
+        $apiKey = config('app.api_key');
 
         // if ($apiToken !== $apiKey) {
         //     return response()->json(['error' => 'Unauthorized'], 401);
@@ -70,7 +70,7 @@ class ApiAuthController extends Controller
         //     }
 
             return response()->json([
-                'username' => 'gsa'
+                'username' => $apiKey
                 // 'username' => $user->username,
                 // 'role' => $role,
                 // 'id_no' => $user->id_no,
