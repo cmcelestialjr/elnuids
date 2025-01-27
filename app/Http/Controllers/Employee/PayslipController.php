@@ -9,12 +9,12 @@ use Illuminate\Support\Facades\Storage;
 
 class PayslipController extends Controller
 {
-    public function index($year)
+    public function index(Request $request)
     {
-
+        
         $query = EmployeePayslipFile::where('user_id',1)->where('year',2025)->first();
 
-        return 'https://ids.lnu.edu.ph/pdf_error.pdf';
+        return Storage::download($query->path);
 
     }
 }
